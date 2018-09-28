@@ -15,6 +15,16 @@ do
 done
 
 #Produce QC output reports to check data quality
+#Use FastQC program
 
 fastqc data/raw_data/*.fastq --outdir=output/fastqc
+
+#Create for loop to trim sequences based on quality scores
+
+for file in data/raw_data/*.fastq
+do 
+#Info on the Trimmomatic tool available here: http://www.usadellab.org/cms/index.php?page=trimmomatic
+TrimmomaticSE -threads 2 -phred33 "$file" data/trimmed/"$(basename -s .fastq '$file')".trim.fastq LEADING:5 TRAILING:5 SLIDINGWINDOW:8:25 MINLEN:150
+done 
+
 
