@@ -24,7 +24,21 @@ fastqc data/raw_data/*.fastq --outdir=output/fastqc
 for file in data/raw_data/*.fastq
 do 
 #Info on the Trimmomatic tool available here: http://www.usadellab.org/cms/index.php?page=trimmomatic
-TrimmomaticSE -threads 2 -phred33 "$file" data/trimmed/"$(basename -s .fastq '$file')".trim.fastq LEADING:5 TRAILING:5 SLIDINGWINDOW:8:25 MINLEN:150
+TrimmomaticSE -threads 2 -phred33 "$file" data/trimmed/"$(basename -s .fastq "$file")".trim.fastq LEADING:5 TRAILING:5 SLIDINGWINDOW:8:25 MINLEN:150
+done 
+
+#Convert fastq to fasta files
+#Conversion allows for files to be used for BLAST queries
+
+for file in data/raw_data/*.fastq
+do 
+bioawk -c fastx '{print ">"$name"\n"$seq}'"$file" > "output/converted_fasta/$(basename .fastq "$file").fasta"
+done 
+
+#Produce BLAST sequence code
+for file in output/converted_fasta/*.fasta
+do
+ blastn -db /blast-db/nt -num_threads 2 -outfmt '10 sscinames std' -out blast_results.csv -max_target_seqs 1 -negative_gilist /blast-db/2018-09-19_environmental_sequence.gi -query "$file"
 done 
 
 
