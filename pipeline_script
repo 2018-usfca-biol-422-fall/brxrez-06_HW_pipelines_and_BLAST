@@ -36,6 +36,7 @@ bioawk -c fastx '{print ">"$name"\n"$seq}'"$file" > "output/converted_fasta/$(ba
 done 
 
 #Produce BLAST sequence code
+echo Blasting ... 
 for file in output/converted_fasta/*.fasta
 do
  blastn -db /blast-db/nt -num_threads 2 -outfmt '10 sscinames std' -out blast_results.csv -max_target_seqs 1 -negative_gilist /blast-db/2018-09-19_environmental_sequence.gi -query "$file"
