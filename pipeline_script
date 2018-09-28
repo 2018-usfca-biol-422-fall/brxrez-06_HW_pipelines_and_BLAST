@@ -32,7 +32,7 @@ done
 
 for file in data/raw_data/*.fastq
 do 
-bioawk -c fastx '{print ">"$name"\n"$seq}'"$file" > "output/converted_fasta/$(basename .fastq "$file").fasta"
+bioawk -c fastx '{print ">"$name"\n"$seq}'"$file" > output/converted_fasta/"$(basename .fastq "$file")".fasta
 done 
 
 #Produce BLAST sequence code
