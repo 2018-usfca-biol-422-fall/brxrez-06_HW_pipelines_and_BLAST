@@ -32,14 +32,14 @@ done
 
 for file in data/trimmed/*.trim.fastq
 do 
-bioawk -c fastx '{print ">"$name"\n"$seq}'"$file" > output/converted_fasta/"$(basename .fastq "$file")".fasta
+bioawk -c fastx '{print ">"$name"\n"$seq}' "$file" > output/converted_fasta/"$(basename -s .fastq "$file")".fasta
 done 
 
 #Produce BLAST sequence code
 echo Blasting ... 
 for file in output/converted_fasta/*.fasta
 do
- blastn -db /blast-db/nt -num_threads 2 -outfmt '10 sscinames std' -out blast_results.csv -max_target_seqs 1 -negative_gilist /blast-db/2018-09-19_environmental_sequence.gi -query "$file"
+ blastn -db /blast-db/nt -num_threads 2 -outfmt '10 sscinames std' -out output/blast_results/"$(basename -s .fasta "$file")"_blast_results.csv -max_target_seqs 1 -negative_gilist /blast-db/2018-09-19_environmental_sequence.gi -query "$file"
 done 
 
 
