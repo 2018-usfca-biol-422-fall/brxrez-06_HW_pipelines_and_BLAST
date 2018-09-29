@@ -30,7 +30,7 @@ done
 #Convert fastq to fasta files
 #Conversion allows for files to be used for BLAST queries
 
-for file in data/raw_data/*.fastq
+for file in data/trimmed/*.trim.fastq
 do 
 bioawk -c fastx '{print ">"$name"\n"$seq}'"$file" > output/converted_fasta/"$(basename .fastq "$file")".fasta
 done 
